@@ -5,6 +5,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -65,31 +66,37 @@ public class Controller {
         listOfTrackedPrograms.setItems(items);
         MultipleSelectionModel<String> trackedProgramsSelModel = listOfTrackedPrograms.getSelectionModel();
         trackedProgramsSelModel.selectedItemProperty().addListener(new ChangeListener<String>(){
-            public void changed(ObservableValue<? extends String> changed, String oldValue, String newValue){
+            public void changed(ObservableValue<? extends String> changed, String oldValue, String newValue) {
                 TrackedProgramNameLabel.setText("Програма: " + newValue);
-                logic.countExecutionTimeOfProgram(newValue);
+                System.out.println("Old value: " + oldValue);
+                System.out.println("New value: " + newValue);
                 Timeline timeline;
-                String str = "Секунд у поточночному сеансі: ";
+                String str = "Час у поточночному сеансі: ";
+                AtomicInteger time = new AtomicInteger(0);
                 timeline = new Timeline(
                         new KeyFrame(Duration.millis(1000), e -> {
-                            timeOfCurrentSessionLabel.setText(str + new SimpleDateFormat("HH:mm:ss")
-                                    .format(new Date(TimeUnit.SECONDS.toMillis(logic.getExecutionTime()))));
+                            if (logic.isProcessAlive(newValue)) {
+                                time.getAndIncrement();
+                                System.out.println("Time = " + time);
+                                timeOfCurrentSessionLabel.setText(str + new SimpleDateFormat("mm:ss")
+                                        .format(new Date(TimeUnit.SECONDS.toMillis(time.get()))));
+                                totalTimeOfWorkLabel.setText(str + new SimpleDateFormat("mm:ss")
+                                        .format(new Date(TimeUnit.SECONDS.toMillis(time.get()))));
+                            } else {
+                                System.out.println("Час виконання програми: " + newValue + new SimpleDateFormat(" mm:ss ")
+                                        .format(new Date(TimeUnit.SECONDS.toMillis(time.get()))));
+                            }
                         })
                 );
                 timeline.setCycleCount(Timeline.INDEFINITE);
-                timeline.play();
+                if (logic.isProcessAlive(newValue)){
+                    timeline.play();
+                }
+                else{
+                    timeline.stop();
+                }
             }
         });
-        /*ArrayList<String > arr = logic.getAllImportantPrograms();
-        ObservableList<String> items2 = FXCollections.observableArrayList(arr);
-        installedProgramsListView.setItems(items2);
-        MultipleSelectionModel<String> installedProgramsSelMod = installedProgramsListView.getSelectionModel();
-        installedProgramsSelMod.selectedItemProperty().addListener(new ChangeListener<String>(){
-            public void changed(ObservableValue<? extends String> changed, String oldValue, String newValue){
-                System.out.println("New Value is: "+newValue);
-            }
-        });*/
-
         ArrayList<String > installedPrograms = logic.getAllImportantPrograms();
         ObservableList<String> ins = FXCollections.observableArrayList (installedPrograms);
         installedProgramsListView.setItems(ins);
