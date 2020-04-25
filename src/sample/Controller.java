@@ -83,7 +83,7 @@ public class Controller {
                                 totalTimeOfWorkLabel.setText(str + new SimpleDateFormat("mm:ss")
                                         .format(new Date(TimeUnit.SECONDS.toMillis(time.get()))));
                             } else {
-                                System.out.println("Час виконання програми: " + newValue + new SimpleDateFormat(" mm:ss ")
+                                System.out.println("Час виконання програми:    " + newValue + new SimpleDateFormat(" mm:ss ")
                                         .format(new Date(TimeUnit.SECONDS.toMillis(time.get()))));
                             }
                         })
