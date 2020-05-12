@@ -515,3 +515,124 @@ CsGo total time_2783_
 Zoom execution time: 0
 Zoom total time_4372_
 
+Востаннє програма відкривалась Sun May 10 11:21:12 EEST 2020
+Chrome execution time: 13
+Chrome total time_15381_
+Discord execution time: 13
+Discord total time_10560_
+Steam execution time: 0
+Steam total time_5324_
+CsGo execution time: 0
+CsGo total time_2783_
+Zoom execution time: 0
+Zoom total time_4372_
+
+Востаннє програма відкривалась Sun May 10 11:27:30 EEST 2020
+Chrome execution time: 9
+Chrome total time_15390_
+Discord execution time: 9
+Discord total time_10569_
+Steam execution time: 0
+Steam total time_5324_
+CsGo execution time: 0
+CsGo total time_2783_
+Zoom execution time: 0
+Zoom total time_4372_
+
+
+Востаннє програма відкривалась Tue May 12 16:42:50 EEST 2020
+Chrome execution time: 435
+Chrome total time_15825_
+Discord execution time: 292
+Discord total time_10861_
+Steam execution time: 0
+Steam total time_5324_
+CsGo execution time: 0
+CsGo total time_2783_
+Zoom execution time: 291
+Zoom total time_4663_
+
+Востаннє програма відкривалась Tue May 12 16:52:15 EEST 2020
+Chrome execution time: 143
+Chrome total time_15968_
+Discord execution time: 113
+Discord total time_10974_
+Steam execution time: 0
+Steam total time_5324_
+CsGo execution time: 0
+CsGo total time_2783_
+Zoom execution time: 88
+Zoom total time_4751_
+
+Востаннє програма відкривалась Tue May 12 16:57:04 EEST 2020
+Chrome execution time: 77
+Chrome total time_16045_
+Discord execution time: 0
+Discord total time_10974_
+Steam execution time: 0
+Steam total time_5324_
+CsGo execution time: 0
+CsGo total time_2783_
+Zoom execution time: 0
+Zoom total time_4751_
+
+Востаннє програма відкривалась Tue May 12 17:07:50 EEST 2020
+Chrome execution time: 482
+Chrome total time_16527_
+Discord execution time: 0
+Discord total time_10974_
+Steam execution time: 0
+Steam total time_5324_
+CsGo execution time: 0
+CsGo total time_2783_
+Zoom execution time: 0
+Zoom total time_4751_
+
+Востаннє програма відкривалась Tue May 12 17:09:05 EEST 2020
+Chrome execution time: 69
+Chrome total time_16596_
+Discord execution time: 0
+Discord total time_10974_
+Steam execution time: 0
+Steam total time_5324_
+CsGo execution time: 0
+CsGo total time_2783_
+Zoom execution time: 0
+Zoom total time_4751_
+
+Востаннє програма відкривалась Tue May 12 17:18:09 EEST 2020
+Chrome execution time: 538
+Chrome total time_17134_
+Discord execution time: 0
+Discord total time_10974_
+Steam execution time: 0
+Steam total time_5324_
+CsGo execution time: 0
+CsGo total time_2783_
+Zoom execution time: 0
+Zoom total time_4751_
+
+Востаннє програма відкривалась Tue May 12 17:20:49 EEST 2020
+Chrome execution time: 150
+Chrome total time_17284_
+Discord execution time: 0
+Discord total time_10974_
+Steam execution time: 0
+Steam total time_5324_
+CsGo execution time: 0
+CsGo total time_2783_
+Zoom execution time: 0
+Zoom total time_4751_
+
+Востаннє програма відкривалась Tue May 12 17:22:05 EEST 2020
+Chrome execution time: 69
+Chrome total time_17353_
+Discord execution time: 0
+Discord total time_10974_
+Steam execution time: 0
+Steam total time_5324_
+CsGo execution time: 0
+CsGo total time_2783_
+Zoom execution time: 0
+Zoom total time_4751_
+

@@ -60,9 +60,11 @@
                                                 <Label fx:id="TrackedProgramNameLabel" layoutY="5.0" text="Програма: " />
                                                 <Label fx:id="timeOfCurrentSessionLabel" layoutY="42.0" text="У поточному сеансі: " />
                                                 <Label fx:id="totalTimeOfWorkLabel" layoutY="82.0" text="Загальний час роботи: " />
-                                                <Button fx:id="updateButton" layoutX="166.0" layoutY="255.0" mnemonicParsing="false" text="Обновити" AnchorPane.bottomAnchor="14.599999999999987" AnchorPane.rightAnchor="14.799999999999997" />
+                                                <Button fx:id="updateButton" layoutX="166.0" layoutY="242.0" mnemonicParsing="false" text="Обновити" AnchorPane.bottomAnchor="27.600000000000023" AnchorPane.leftAnchor="166.0" AnchorPane.rightAnchor="14.800000000000011" AnchorPane.topAnchor="242.0" />
                                     <ComboBox fx:id="alarmComboBox" layoutY="135.0" prefWidth="150.0" />
                                     <Label layoutX="2.0" layoutY="109.0" text="Сповіщувати кожні:" />
+                                    <Button fx:id="AddToTrack" layoutX="2.0" layoutY="242.0" mnemonicParsing="false" text=" Добавити" />
+                                    <Button fx:id="dellFromTrack" layoutX="89.0" layoutY="242.0" mnemonicParsing="false" text="Видалити" />
                                             </children>
                                         </AnchorPane>
                                     </content>

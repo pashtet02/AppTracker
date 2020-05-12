@@ -1,7 +1,7 @@
 package sample;
 import javafx.collections.ObservableList;
+import sandbox.Tray;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.*;
 import java.net.MalformedURLException;
@@ -95,30 +95,6 @@ class Logic{
         }
     }
 
-    public void showNotification(String text) throws AWTException, MalformedURLException {
-        //Obtain only one instance of the SystemTray object
-        SystemTray tray = SystemTray.getSystemTray();
-        /*Image image = null;
-        try {
-            image = ImageIO.read(new File("C:\\Users\\Pavlo\\Desktop\\gitHub\\TeamWork\\src\\sample\\GearIcon.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-        //If the icon is a file
-        //Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
-        //Alternative (if the icon is on the classpath):
-        Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("src/sample/images/GearIconButton.png"));
-
-        TrayIcon trayIcon = new TrayIcon(image, "Java AWT Tray Demo");
-        //Let the system resize the image if needed
-        trayIcon.setImageAutoSize(true);
-        //Set tooltip text for the tray icon
-        trayIcon.setToolTip("App Tracker");
-        tray.add(trayIcon);
-        trayIcon.displayMessage("App Tracker", text, TrayIcon.MessageType.NONE);
-        tray.remove(trayIcon);
-
-    }
 
     public void writeItemsInFileAndTime(File file, ObservableList<String> items, ArrayList<Integer> execTimeInSec) {
         try (FileWriter writer = new FileWriter(file, true)) {
@@ -145,6 +121,8 @@ class Logic{
                     if (wordNumber == totalTime.length - 1)
                         wordNumber = 0;
                     else wordNumber++;
+                }else{
+
                 }
             }
             sc.close();
@@ -161,4 +139,5 @@ class Logic{
             System.out.println(ex.getMessage());
         }
     }
+
 }
