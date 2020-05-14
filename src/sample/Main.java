@@ -18,43 +18,43 @@ import java.io.IOException;
 
 public class Main extends Application{
 
-    Logic logic = new Logic();
-    Stage primaryStage = new Stage();
-    SystemTray tray = java.awt.SystemTray.getSystemTray();
-    static ImageIcon icon = new ImageIcon("src/sample/bulb2.gif");
-    static Image image = icon.getImage();
+    private Logic logic = new Logic();
+    private Stage primaryStage = new Stage();
+    private File file = new File("src/sample/info.txt");
+
+    private static ImageIcon icon = new ImageIcon("src/sample/bulb2.gif");
+    private static Image image = icon.getImage();
     private static boolean notificationsOn = true;
-    static TrayIcon trayIcon = new TrayIcon(image);
+    public static TrayIcon trayIcon = new TrayIcon(image);
+    SystemTray tray = java.awt.SystemTray.getSystemTray();
 
 
     @Override
     public void stop() throws Exception {
         super.stop();
-        File file = new File("src/sample/info.txt");
         ObservableList<String> items = FXCollections.observableArrayList("Chrome", "Discord", "Steam", "CsGo", "Zoom");
-        logic.writeItemsInFileAndTime(file, items, Controller.getTimeOfAllPrograms());
+        logic.writeInfo(file, items, Controller.getTimeOfAllPrograms(), Controller.getStepOfNotifications());
     }
 
     @Override
     public void start(Stage primaryStage) throws IOException {
         this.addAppToTray(trayIcon);
         this.primaryStage = primaryStage;
+
         Platform.setImplicitExit(false);
         primaryStage.setOnCloseRequest(e ->{
             primaryStage.hide();
 
         });
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Tracker");
+        primaryStage.setTitle("App Tracker");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
     }
 
 
-    void addAppToTray(TrayIcon trayIcon) {
+    private void addAppToTray(TrayIcon trayIcon) {
         try {
-            java.awt.Toolkit.getDefaultToolkit();
-            //app requires system tray support, just exit if there is no support.
             if (!java.awt.SystemTray.isSupported()) {
                 System.out.println("No system tray support, application exiting.");
                 Platform.exit();
@@ -65,7 +65,6 @@ public class Main extends Application{
             java.awt.MenuItem openItem = new java.awt.MenuItem("Open");
             CheckboxMenuItem notifications = new CheckboxMenuItem("Вимкнути сповіщення");
             java.awt.MenuItem exitItem = new java.awt.MenuItem("Exit");
-
 
             notifications.addItemListener(new ItemListener() {
                 public void itemStateChanged(ItemEvent e) {
@@ -83,8 +82,7 @@ public class Main extends Application{
             java.awt.Font boldFont = defaultFont.deriveFont(java.awt.Font.BOLD);
             openItem.setFont(boldFont);
             notifications.setFont(boldFont);
-
-
+            exitItem.setFont(boldFont);
             exitItem.addActionListener(event -> {
                 Platform.exit();
                 tray.remove(trayIcon);
@@ -97,13 +95,13 @@ public class Main extends Application{
             popup.add(exitItem);
             trayIcon.setPopupMenu(popup);
             tray.add(trayIcon);
-        } catch (AWTException e) {
+        }catch (AWTException e) {
             System.out.println("Unable to init system tray");
             e.printStackTrace();
         }
     }
 
-    static void showNotification(String text, TrayIcon trayIcon){
+    public static void showNotification(String text, TrayIcon trayIcon){
         if (notificationsOn)
             trayIcon.displayMessage("App Tracker", text, TrayIcon.MessageType.INFO);
         else
