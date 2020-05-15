@@ -40,8 +40,8 @@ import static sample.Main.showNotification;
 
 
 public class Controller {
-    private Logic logic = new Logic();
-    private File infoFile = new File("src/sample/info.txt");
+    private static Logic logic = new Logic();
+    private static File infoFile = new File("src/sample/info.txt");
     private final int FifteenMinutes = 900;
     private final int OneHour = 3600;
     private final int ThreeHours = 10800;
@@ -104,8 +104,11 @@ public class Controller {
     @FXML
     private Button dellFromTrack;
 
-    ObservableList<String> items = FXCollections.observableArrayList(
-            "Chrome", "Discord", "Steam", "CsGo", "Zoom");
+    public static ObservableList<String> getItems() {
+        return items;
+    }
+
+    public static ObservableList<String> items = FXCollections.observableArrayList(logic.readItems(infoFile));
 
     ObservableList<String> elem = FXCollections.observableArrayList(
             "Вимкнути сповіщення", "15 хв", "Щогодини", "Раз на три години");
@@ -117,7 +120,7 @@ public class Controller {
     @FXML
     void initialize() {
         logic.readTotalTimeOfWork(infoFile, items);
-        logic.readItemsFromFile(infoFile);
+        System.out.println(items);
 
         SingleSelectionModel<String> alarmComboBoxSelMod = alarmComboBox.getSelectionModel();
 
@@ -191,7 +194,7 @@ public class Controller {
             }
         });
 
-       /* //Неробочий код на майбутнє
+        //Неробочий код на майбутнє
         AddToTrack.setVisible(false);
         dellFromTrack.setVisible(false);
         AddToTrack.setOnAction(e -> {
@@ -199,8 +202,9 @@ public class Controller {
             int sizeOne = timeOfAllPrograms.size();
             int sizeTwo = totalTimeArr.size();
             items.add(nameOfChoicedProgram);
+            System.out.println(items);
             trackOne(nameOfChoicedProgram, sizeOne, sizeTwo);
-        });*/
+        });
     }
 
     //Декілька методів для коректної роботи програми
@@ -210,7 +214,6 @@ public class Controller {
     private void updateCheckBox(SingleSelectionModel<String> alarmComboBoxSelMod){
         int indexOfSelectedItem = trackedProgramsSelModel.getSelectedIndex();
         int period = stepOfNotifications.get(indexOfSelectedItem);
-        System.out.println("period is  "+period);
         switch (period){
             case 900:
                 alarmComboBoxSelMod.select(1);

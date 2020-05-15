@@ -2,7 +2,6 @@ package sample;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,13 +26,15 @@ public class Main extends Application{
     private static boolean notificationsOn = true;
     public static TrayIcon trayIcon = new TrayIcon(image);
     SystemTray tray = java.awt.SystemTray.getSystemTray();
-
+    ObservableList<String> elem = Controller.getItems();
 
     @Override
     public void stop() throws Exception {
         super.stop();
-        ObservableList<String> items = FXCollections.observableArrayList("Chrome", "Discord", "Steam", "CsGo", "Zoom");
-        logic.writeInfo(file, items, Controller.getTimeOfAllPrograms(), Controller.getStepOfNotifications());
+        //ObservableList<String> items = FXCollections.observableArrayList("Chrome", "Discord", "Steam", "CsGo", "Zoom");
+        logic.writeInfo(file, elem, Controller.getTimeOfAllPrograms(), Controller.getStepOfNotifications());
+        System.out.println(elem);
+        logic.writeItems(file, elem);
     }
 
     @Override

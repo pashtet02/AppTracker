@@ -58,49 +58,51 @@ class Logic{
         }
         return programIsAlive;
     }
+    public void writeItems(File file, ObservableList<String> items){
+        try (FileWriter writer = new FileWriter(file, true)) {
+            StringBuilder result = new StringBuilder("Items_");
+            String[] str = new String[items.size()];
+            Scanner sc = new Scanner(file, StandardCharsets.UTF_8);
 
-    public ArrayList<String> readItemsFromFile(File file){
+            for (int i = 0; i < items.size(); i++) {
+                str[i] = String.valueOf(items.get(i));
+                result.append(str[i] + "_");
+            }
+            result.deleteCharAt(result.length()-1);
+            System.out.println(result);
 
-       ArrayList<String> items = new ArrayList<>(1);
-            items.add(0, "*");
+            writer.append(result + "\n");
+            sc.close();
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        int wordNumber = 0;
+    }
+    public ArrayList<String> readItems(File file){
+        ArrayList<String> items = new ArrayList<>();
+        String[] arrStr;
         Scanner sc = null;
         try {
             sc = new Scanner(file, StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         while (sc.hasNextLine()) {
             String str = sc.nextLine();
-            if (str.contains("execution time")){
-                char[] arr = str.toCharArray();
-                StringBuilder item = new StringBuilder();
-                for (int i = 0; i < arr.length; i++) {
-                    if (arr[i] == ' '){
-                        System.out.println(String.valueOf(item));
-                        for (int j = 0; j < items.size(); j++) {
-                            if (!items.get(j).equals(String.valueOf(item))){
-                                items.add(wordNumber ,String.valueOf(item));
-                                System.out.println("reader  = = = == "  + item);
-                                wordNumber++;
-
-                            }
-                        }
-                        break;
-                    }else {
-                        item.append(arr[i]);
+            if (str.contains("Items")){
+                items.clear();
+                arrStr = str.split("_");
+                for (int i = 1; i < arrStr.length; i++) {
+                    if(!items.contains(arrStr[i])){
+                        items.add(i-1, arrStr[i]);
                     }
                 }
             }
         }
-        for (int i = 0; i < items.size(); i++) {
-            System.out.println(items.get(i));
-        }
-
         return items;
     }
-
     public void readTotalTimeOfWork(File file, ObservableList<String> items) {
         int[] totalTime = new int[items.size()];
         int[] notificationsTime = new int[items.size()];
