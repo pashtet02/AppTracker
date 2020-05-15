@@ -1,9 +1,10 @@
 package sample;
         //TODO
-        /**1. можливість трекінга інших програм
-        2. Добавити іконки на кнопки і тд
-        4. Перемалювати картинку програми (сам інтерфейс)
-        6. Додати кнопки "дадати" і "видалити" (це потрібно для того щоб включати виключати трекінг тої чи іншої проги)
+        /**1.забрати повторювані програмки з встановлених програм
+         * 2. адекватний трекінг в trackOne
+
+
+
          9. зробити рефакторинг всього
          10. Зробити jar файл
         Висновок: нам пздц, я сам навіть 4 з 8 не зможу зробити + мене вже заєбала ця робота))))*/
@@ -31,10 +32,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 
 import static sample.Main.showNotification;
 
@@ -112,7 +111,6 @@ public class Controller {
     public static ObservableList<String> getItems() {
         return items;
     }
-
     public static ObservableList<String> items = FXCollections.observableArrayList(logic.readItems(infoFile));
 
     ObservableList<String> elem = FXCollections.observableArrayList(
@@ -198,6 +196,7 @@ public class Controller {
             e.printStackTrace();
         }
         ObservableList<String> installedPrograms = FXCollections.observableArrayList(installedProgramsArr);
+
         installedProgramsListView.setItems(installedPrograms);
         MultipleSelectionModel<String> instProgramSelMod = installedProgramsListView.getSelectionModel();
 
@@ -216,15 +215,19 @@ public class Controller {
         dellFromTrack.setVisible(false);
         AddToTrack.setOnAction(e -> {
             System.out.println("Add button");
+            int index = instProgramSelMod.getSelectedIndex();
             int sizeOne = timeOfAllPrograms.size();
             int sizeTwo = totalTimeArr.size();
             items.add(nameOfChoicedProgram);
-            System.out.println(items);
             trackOne(nameOfChoicedProgram, sizeOne, sizeTwo);
+            System.out.println("Name of program_" + nameOfChoicedProgram + "_");
+            installedPrograms.remove(index);
+            installedProgramsListView.refresh();
+            System.out.println(items);
+
         });
     }
 
-    //Декілька методів для коректної роботи програми
 
 
     //викликається при натисненні нового елемента з таба tracked programs
@@ -249,8 +252,7 @@ public class Controller {
     void trackOne(String nameOfProgram, int indexOfCurr, int indexOfTotal){
         timeOfAllPrograms.add(indexOfCurr, 0);
         totalTimeArr.add(indexOfTotal, 0);
-        stepOfNotifications.add(indexOfCurr, 0);
-        stepOfNotifications.set(indexOfCurr, FifteenMinutes);
+        stepOfNotifications.add(indexOfCurr, OneHour);
         Timeline timeline;
         int[] lol = {0};
         Logic logic = new Logic();
@@ -258,7 +260,7 @@ public class Controller {
         int[] totalTime = new int[1];
         timeline = new Timeline(
                 new KeyFrame(Duration.millis(1000), e -> {
-                    if(logic.isProcessAlive(nameOfProgram)) {
+                    if(logic.isProcessAlive(nameOfProgram.substring(0, nameOfProgram.length()-1))) {
                         currentTime[0]++;
                         totalTime[0]++;
                         System.out.println("In track one process works "  + nameOfProgram + " curr time = " + currentTime[0]);
@@ -269,10 +271,7 @@ public class Controller {
                         }
                     }
                     timeOfAllPrograms.set(indexOfCurr, currentTime[0]);
-                    System.out.println(timeOfAllPrograms.get(indexOfCurr));
                     totalTimeArr.set(indexOfTotal, totalTime[0]);
-                    System.out.println(totalTimeArr.get(indexOfTotal));
-                    System.out.println(stepOfNotifications.get(indexOfCurr));
                 })
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -281,7 +280,7 @@ public class Controller {
     //таймер, який кожні 20с обновляє лейбли з часом
     private void updatorOfLabels(){
         Timeline timeline;
-        timeline = new Timeline(new KeyFrame(Duration.seconds(30), e -> {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(20), e -> {
             int index = trackedProgramsSelModel.getSelectedIndex();
             if (index >= 0){
                 updateTimeLabel(timeOfAllPrograms.get(index) / 60, timeOfCurrentSessionLabel, "Час у поточному сеансі: ");
@@ -337,18 +336,6 @@ public class Controller {
         try {
             writer = new FileWriter(file, true);
             writer.append("Items is: " + trackedProgramsSelModel.getSelectedItems() + "\n");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public void readItemsFromFile(File file, ObservableList<String> items){
-        try{
-            Scanner sc = new Scanner(file, StandardCharsets.UTF_8);
-            while (sc.hasNextLine()) {
-                String str = sc.nextLine();
-                if (str.contains("Items is: ")){
-                }
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }

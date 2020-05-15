@@ -51,7 +51,7 @@ public class Main extends Application{
         primaryStage.setTitle("App Tracker");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
-    }
+        }
 
 
     private void addAppToTray(TrayIcon trayIcon) {

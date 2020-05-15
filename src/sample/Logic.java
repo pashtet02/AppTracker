@@ -38,7 +38,6 @@ class Logic{
         while ((line = stdout.readLine()) != null) {
             if ((line.contains("a") || line.contains("i") || line.contains("o") || line.contains("e") ||line.contains("u")) && !(line.contains("Windows") || line.contains("Win") || line.contains("vs")
                     || line.contains("Microsoft") || line.contains("icecap") || line.contains("----") || line.contains("DisplayName"))) {
-
                         lst.add(line.replaceAll("[\\s]{2,}", " "));
             }
         }

@@ -1,11 +1,11 @@
-Востаннє програма відкривалась Fri May 15 12:35:06 EEST 2020
-Chrome execution time: 19
-Chrome total time_42561_
+Востаннє програма відкривалась Fri May 15 20:23:40 EEST 2020
+Chrome execution time: 257
+Chrome total time_46182_
 Chrome minutes_3600_
-Discord execution time: 19
-Discord total time_33767_
+Discord execution time: 0
+Discord total time_35031_
 Discord minutes_3600_
-Steam execution time: 19
+Steam execution time: 0
 Steam total time_17153_
 Steam minutes_900_
 CsGo execution time: 0
@@ -14,16 +14,7 @@ CsGo minutes_10800_
 Zoom execution time: 0
 Zoom total time_6194_
 Zoom minutes_900_
-IntelliJ IDEA Community Edition 2019.3 execution time: 19
-IntelliJ IDEA Community Edition 2019.3 total time_1886_
+IntelliJ IDEA Community Edition 2019.3 execution time: 257
+IntelliJ IDEA Community Edition 2019.3 total time_5507_
 IntelliJ IDEA Community Edition 2019.3 minutes_900_
-Java 8 Update 241 execution time: 0
-Java 8 Update 241 total time_0_
-Java 8 Update 241 minutes_900_
-ManicTime execution time: 19
-ManicTime total time_1432_
-ManicTime minutes_900_
-Rockstar Games Launcher execution time: 0
-Rockstar Games Launcher total time_0_
-Rockstar Games Launcher minutes_900_
-Items_Chrome_Discord_Steam_CsGo_Zoom_IntelliJ IDEA Community Edition 2019.3_Java 8 Update 241_ManicTime_Rockstar Games Launcher
+Items_Chrome_Discord_Steam_CsGo_Zoom_IntelliJ IDEA Community Edition 2019.3
