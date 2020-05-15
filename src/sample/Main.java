@@ -32,7 +32,7 @@ public class Main extends Application{
     public void stop() throws Exception {
         super.stop();
         //ObservableList<String> items = FXCollections.observableArrayList("Chrome", "Discord", "Steam", "CsGo", "Zoom");
-        logic.writeInfo(file, elem, Controller.getTimeOfAllPrograms(), Controller.getStepOfNotifications());
+        logic.writeInfo(file, elem, Controller.getTimeOfAllPrograms(), Controller.getStepOfNotifications(), Controller.getTotalTimeArr());
         System.out.println(elem);
         logic.writeItems(file, elem);
     }

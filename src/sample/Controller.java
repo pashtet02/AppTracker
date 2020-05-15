@@ -46,6 +46,7 @@ public class Controller {
     private final int OneHour = 3600;
     private final int ThreeHours = 10800;
     private String nameOfCurrProgram = "";
+
     public static ArrayList<Integer> totalTimeArr = new ArrayList<>(); //масив з загальним часом роботи всіх програм
     public static ArrayList<Integer> timeOfAllPrograms = new ArrayList<>(); //масив з поточним часом роботи програм
     public static ArrayList<Integer> stepOfNotifications = new ArrayList<>(); //масив з періодом сповіщень для кожної програми
@@ -57,6 +58,10 @@ public class Controller {
 
     public static ArrayList<Integer> getTimeOfAllPrograms() {
         return timeOfAllPrograms;
+    }
+
+    public static ArrayList<Integer> getTotalTimeArr() {
+        return totalTimeArr;
     }
 
     @FXML
@@ -140,7 +145,19 @@ public class Controller {
                 updateCheckBox(alarmComboBoxSelMod);
                 nameOfCurrProgram = newValue;
                 alarmComboBox.setVisible(true);
+                System.out.println(timeOfAllPrograms);
+                System.out.println(totalTimeArr);
             }
+        });
+
+        statsToggleButton.setOnAction(e -> {
+            showAlertWithoutHeaderText("Меню статистики");
+            statsToggleButton.setSelected(false);
+        });
+
+        settingsToggleButton.setOnAction( e ->{
+            showAlertWithoutHeaderText("Меню налаштувань");
+            settingsToggleButton.setSelected(false);
         });
 
         alarmComboBox.setItems(elem);
@@ -173,10 +190,10 @@ public class Controller {
         trackAll(items);
         updatorOfLabels();
 
-        //Пишемо всі інстальовані програми
+        //Пишемо всі інстальовані програми крім тих що вже в іншому табі
         ArrayList<String> installedProgramsArr = null;
         try {
-            installedProgramsArr = logic.getAllImportantPrograms();;
+            installedProgramsArr = logic.getAllImportantPrograms();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -232,7 +249,10 @@ public class Controller {
     void trackOne(String nameOfProgram, int indexOfCurr, int indexOfTotal){
         timeOfAllPrograms.add(indexOfCurr, 0);
         totalTimeArr.add(indexOfTotal, 0);
+        stepOfNotifications.add(indexOfCurr, 0);
+        stepOfNotifications.set(indexOfCurr, FifteenMinutes);
         Timeline timeline;
+        int[] lol = {0};
         Logic logic = new Logic();
         int[] currentTime = new int[1];
         int[] totalTime = new int[1];
@@ -243,11 +263,16 @@ public class Controller {
                         totalTime[0]++;
                         System.out.println("In track one process works "  + nameOfProgram + " curr time = " + currentTime[0]);
                         System.out.println("In track one process works " + nameOfProgram + " total time = " + totalTime[0]);
+                        if (currentTime[0] % stepOfNotifications.get(indexOfCurr) == 0){
+                            lol[0] += stepOfNotifications.get(indexOfCurr) / 60;
+                            showNotification("Ви працюєте вже " + lol[0] +" хвилин в " + items.get(indexOfCurr), Main.trayIcon);
+                        }
                     }
-                    timeOfAllPrograms.add(indexOfCurr, currentTime[0]);
+                    timeOfAllPrograms.set(indexOfCurr, currentTime[0]);
                     System.out.println(timeOfAllPrograms.get(indexOfCurr));
-                    totalTimeArr.add(indexOfTotal, totalTime[0]);
+                    totalTimeArr.set(indexOfTotal, totalTime[0]);
                     System.out.println(totalTimeArr.get(indexOfTotal));
+                    System.out.println(stepOfNotifications.get(indexOfCurr));
                 })
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -280,7 +305,6 @@ public class Controller {
     private void trackAll(ObservableList<String> items) {
         Timeline timeline;
         Logic logic = new Logic();
-        Main main = new Main();
         int constantSize = items.size();
         int[] arr = new int[items.size()];
         int[] arr2 = new int[items.size()];
@@ -298,8 +322,8 @@ public class Controller {
                                     showNotification("Ви працюєте вже " + lol[i] +" хвилин в " + items.get(i), Main.trayIcon);
                         }
                         }
-                        timeOfAllPrograms.add(i, arr[i]);
-                        totalTimeArr.add(i, arr2[i]);
+                        timeOfAllPrograms.set(i, arr[i]);
+                        totalTimeArr.set(i, arr2[i]);
                         //System.out.println("Index is " + i + "Value " + arr2[i]);
                     }
                 })
@@ -360,6 +384,13 @@ public class Controller {
                 label.setText(str);
             }
         }
+    }
+    private void showAlertWithoutHeaderText(String text) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(text);
+        alert.setHeaderText(null);
+        alert.setContentText("Вибачте, ця функція ще не реалізована! :(");
+        alert.showAndWait();
     }
 }
 
