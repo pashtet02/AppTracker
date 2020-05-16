@@ -1,20 +1,4 @@
 package sample;
-        //TODO
-        /**1.забрати повторювані програмки з встановлених програм
-         * 2. адекватний трекінг в trackOne
-
-
-
-         9. зробити рефакторинг всього
-         10. Зробити jar файл
-        Висновок: нам пздц, я сам навіть 4 з 8 не зможу зробити + мене вже заєбала ця робота))))*/
-
-       /** ЗРОБЛЕНО І ПОТРІБНО Тестити 12.05
-        3.систем трей
-        7. добавив в popup menu можливість відключення сповіщень
-        5. добавив функцію updatorOfLAbels яка кожні 20 сєк буде обновляти лейлби і писати туди часове значення
-            яке є у вибраної програми (потріно затестить)
-        8.Добавлена можливість вибору для окремої програми періоду сповіщень (15хв, 1год, 3 години)*/
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -22,21 +6,20 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 import static sample.Main.showNotification;
-
 
 public class Controller {
     private static Logic logic = new Logic();
@@ -62,110 +45,188 @@ public class Controller {
     public static ArrayList<Integer> getTotalTimeArr() {
         return totalTimeArr;
     }
+    public static ObservableList<String> items = FXCollections.observableArrayList(logic.readItems(infoFile));
+    public static ObservableList<String> getItems() {
+        return items;
+    }
+
 
     @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
+    private AnchorPane mainPane;
 
     @FXML
     private AnchorPane logicPane;
 
     @FXML
-    private ToggleButton mainWindowToggleButton;
+    private ToggleButton homeButton;
 
     @FXML
-    private ListView<String> installedProgramsListView;
+    private ToggleButton settingsButton;
 
     @FXML
-    private ToggleButton statsToggleButton;
+    private ToggleButton statisticsButton;
 
     @FXML
-    private ToggleButton settingsToggleButton;
+    private AnchorPane settingsPane;
 
     @FXML
-    public ListView<String> listOfTrackedPrograms;
+    private AnchorPane statisticsPane;
+
+    @FXML
+    private AnchorPane homePane;
+
+    @FXML
+    private SplitPane homeSplitPane;
+
+    @FXML
+    private AnchorPane listAnchorPane;
+
+    @FXML
+    private ToggleButton installedProgramsButton;
+
+    @FXML
+    private ToggleButton trackedProcessesButton;
+
+    @FXML
+    private ListView<String> listOfTrackedPrograms;
+
+    @FXML
+    private ListView<String> listOfInstalledPrograms;
+
+    @FXML
+    private Button addToListButton;
+
+    @FXML
+    private AnchorPane infoMainPane;
+
+    @FXML
+    private AnchorPane infoTrackPane;
+
+    @FXML
+    private Label infoName;
+
+    @FXML
+    private Label infoCurrentTime;
+
+    @FXML
+    private Label infoAllTime;
+
+    @FXML
+    private Label infoPeriodLabel;
+
+    @FXML
+    private ComboBox<String> infoPeriodComboBox;
 
     @FXML
     private Text headerText;
 
-    @FXML
-    private Label TrackedProgramNameLabel;
-
-    @FXML
-    private Label timeOfCurrentSessionLabel;
-
-    @FXML
-    private Label totalTimeOfWorkLabel;
-
-    @FXML
-    ComboBox<String> alarmComboBox;
-
-    @FXML
-    private Button AddToTrack;
-
-    @FXML
-    private Button dellFromTrack;
-
-    public static ObservableList<String> getItems() {
-        return items;
-    }
-    public static ObservableList<String> items = FXCollections.observableArrayList(logic.readItems(infoFile));
-
     ObservableList<String> elem = FXCollections.observableArrayList(
-            "Вимкнути сповіщення", "15 хв", "Щогодини", "Раз на три години");
-
+            "Вимкнено", "15 хв.", "1 год.", "3 год.");
     MultipleSelectionModel<String> trackedProgramsSelModel;
 
-
-    //метод в якому задаються початкові параметри програми
     @FXML
     void initialize() {
+        listOfInstalledPrograms.setStyle("-fx-control-inner-background: #313335;");
+        listOfTrackedPrograms.setStyle("-fx-control-inner-background: #313335;");
+        infoPeriodComboBox.setStyle("-fx-control-inner-background: #313335;" + infoPeriodComboBox.getStyle());
+        homeSplitPane.setDividerPositions(1);
+        homeButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                homePane.toFront();
+                statisticsButton.setSelected(false);
+                settingsButton.setSelected(false);
+                homeButton.setDisable(true);
+                statisticsButton.setDisable(false);
+                settingsButton.setDisable(false);
+            }
+        });
+
+        homeSplitPane.getDividers().get(0).positionProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                if (homeSplitPane.getDividerPositions()[0] < 0.4971)
+                    homeSplitPane.setDividerPositions(0.4971);
+            }
+        });
+        trackedProcessesButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                listOfTrackedPrograms.toFront();
+                trackedProcessesButton.setSelected(true);
+                trackedProcessesButton.setBackground(installedProgramsButton.getBackground());
+                trackedProcessesButton.setDisable(true);
+                installedProgramsButton.setSelected(false);
+                installedProgramsButton.setDisable(false);
+                homeSplitPane.setDividerPositions(0.4971);
+            }
+        });
+        installedProgramsButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                listOfInstalledPrograms.toFront();
+                installedProgramsButton.setSelected(true);
+                installedProgramsButton.setBackground(trackedProcessesButton.getBackground());
+                installedProgramsButton.setDisable(true);
+                trackedProcessesButton.setSelected(false);
+                trackedProcessesButton.setDisable(false);
+                homeSplitPane.setDividerPositions(1);
+                addToListButton.toFront();
+            }
+        });
+        statisticsButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                statisticsPane.toFront();
+                homeButton.setSelected(false);
+                settingsButton.setSelected(false);
+                statisticsButton.setDisable(true);
+                homeButton.setDisable(false);
+                settingsButton.setDisable(false);
+                logic.chartCreator(new PieChart(), statisticsPane, items, totalTimeArr);
+            }
+        });
+        settingsButton.setOnAction( e ->{
+            showAlertWithoutHeaderText("Меню налаштувань");
+            settingsButton.setSelected(false);
+        });
+        ////////////////////////////////////////////////////////////////////////
         logic.readTotalTimeOfWork(infoFile, items);
-        System.out.println(items);
+        SingleSelectionModel<String> infoPeriodComboBoxSelMod = infoPeriodComboBox.getSelectionModel();
 
-        SingleSelectionModel<String> alarmComboBoxSelMod = alarmComboBox.getSelectionModel();
-
-        totalTimeOfWorkLabel.setText("Загальний час роботи ");
-        timeOfCurrentSessionLabel.setText("Час у поточному сеансі ");
+        infoAllTime.setText("Загальний час роботи ");
+        infoCurrentTime.setText("Час у поточному сеансі ");
 
         listOfTrackedPrograms.setItems(items);
         trackedProgramsSelModel = listOfTrackedPrograms.getSelectionModel();
         trackedProgramsSelModel.selectedItemProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> changed, String oldValue, String newValue) {
-                TrackedProgramNameLabel.setText("Програма: " + newValue);
+                infoName.setText("Програма: " + newValue);
                 int i = trackedProgramsSelModel.getSelectedIndex();
                 int a = timeOfAllPrograms.get(i) / 60;
                 int b = totalTimeArr.get(i) / 60;
-                updateTimeLabel(a, timeOfCurrentSessionLabel, "Час у поточному сеансі: ");
-                updateTimeLabel(b, totalTimeOfWorkLabel, "Загальний час роботи: ");
-                updateCheckBox(alarmComboBoxSelMod);
+                updateTimeLabel(a, infoCurrentTime, "Час у поточному сеансі: ");
+                updateTimeLabel(b, infoAllTime, "Загальний час роботи: ");
+                updateCheckBox(infoPeriodComboBoxSelMod);
                 nameOfCurrProgram = newValue;
-                alarmComboBox.setVisible(true);
+                infoPeriodComboBox.setVisible(true);
                 System.out.println(timeOfAllPrograms);
                 System.out.println(totalTimeArr);
             }
         });
 
-        statsToggleButton.setOnAction(e -> {
-            showAlertWithoutHeaderText("Меню статистики");
-            statsToggleButton.setSelected(false);
-        });
 
-        settingsToggleButton.setOnAction( e ->{
-            showAlertWithoutHeaderText("Меню налаштувань");
-            settingsToggleButton.setSelected(false);
-        });
-
-        alarmComboBox.setItems(elem);
+        infoPeriodComboBox.setItems(elem);
         if (nameOfCurrProgram.equals("")){
-            alarmComboBox.setVisible(false);
+            infoPeriodComboBox.setVisible(false);
         }
 
-        alarmComboBox.setOnAction(e -> {
-            int index = alarmComboBoxSelMod.getSelectedIndex();
+        infoPeriodComboBox.setOnAction(e -> {
+            int index = infoPeriodComboBoxSelMod.getSelectedIndex();
             switch (index){
+                case 0:
+                    Main.notificationsOn = false;
+                    break;
                 case 1:
                     stepOfNotifications.set(trackedProgramsSelModel.getSelectedIndex(), FifteenMinutes);
                     System.out.println("Index is " + trackedProgramsSelModel.getSelectedIndex() + " 900 " + index);
@@ -188,32 +249,30 @@ public class Controller {
         trackAll(items);
         updatorOfLabels();
 
-        //Пишемо всі інстальовані програми крім тих що вже в іншому табі
+        //TODO
+        //Забрати повторення програм
         ArrayList<String> installedProgramsArr = null;
         try {
-            installedProgramsArr = logic.getAllImportantPrograms();
+            installedProgramsArr = logic.getAllImportantPrograms(items);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("arr size " + installedProgramsArr.size());
         ObservableList<String> installedPrograms = FXCollections.observableArrayList(installedProgramsArr);
-
-        installedProgramsListView.setItems(installedPrograms);
-        MultipleSelectionModel<String> instProgramSelMod = installedProgramsListView.getSelectionModel();
+        listOfInstalledPrograms.setItems(installedPrograms);
+        MultipleSelectionModel<String> instProgramSelMod = listOfInstalledPrograms.getSelectionModel();
 
         instProgramSelMod.selectedItemProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> changed, String oldValue, String newValue) {
                 if (!(newValue.equals(""))){
-                    AddToTrack.setVisible(true);
-                    dellFromTrack.setVisible(true);
+                    addToListButton.setVisible(true);
                 }
                 nameOfChoicedProgram = instProgramSelMod.getSelectedItem();
             }
         });
 
-        //Неробочий код на майбутнє
-        AddToTrack.setVisible(false);
-        dellFromTrack.setVisible(false);
-        AddToTrack.setOnAction(e -> {
+        addToListButton.setVisible(false);
+        addToListButton.setOnAction(e -> {
             System.out.println("Add button");
             int index = instProgramSelMod.getSelectedIndex();
             int sizeOne = timeOfAllPrograms.size();
@@ -222,13 +281,10 @@ public class Controller {
             trackOne(nameOfChoicedProgram, sizeOne, sizeTwo);
             System.out.println("Name of program_" + nameOfChoicedProgram + "_");
             installedPrograms.remove(index);
-            installedProgramsListView.refresh();
+            listOfInstalledPrograms.refresh();
             System.out.println(items);
-
         });
     }
-
-
 
     //викликається при натисненні нового елемента з таба tracked programs
     private void updateCheckBox(SingleSelectionModel<String> alarmComboBoxSelMod){
@@ -283,8 +339,8 @@ public class Controller {
         timeline = new Timeline(new KeyFrame(Duration.seconds(20), e -> {
             int index = trackedProgramsSelModel.getSelectedIndex();
             if (index >= 0){
-                updateTimeLabel(timeOfAllPrograms.get(index) / 60, timeOfCurrentSessionLabel, "Час у поточному сеансі: ");
-                updateTimeLabel(totalTimeArr.get(index) / 60, totalTimeOfWorkLabel, "Загальний час роботи: ");
+                updateTimeLabel(timeOfAllPrograms.get(index) / 60, infoCurrentTime, "Час у поточному сеансі: ");
+                updateTimeLabel(totalTimeArr.get(index) / 60, infoAllTime, "Загальний час роботи: ");
                 System.out.println("Updator worked");
             }
             else {
@@ -312,33 +368,22 @@ public class Controller {
             arr2[i] = totalTimeArr.get(i);
         }
         timeline = new Timeline(new KeyFrame(Duration.millis(1000), e -> {
-                    for (int i = 0; i < constantSize; i++) {
-                        if (logic.isProcessAlive(items.get(i))) {
-                            arr[i]++;
-                            arr2[i]++;
-                            if (arr[i] % stepOfNotifications.get(i) == 0){
-                                lol[i] += stepOfNotifications.get(i) / 60;
-                                    showNotification("Ви працюєте вже " + lol[i] +" хвилин в " + items.get(i), Main.trayIcon);
-                        }
-                        }
-                        timeOfAllPrograms.set(i, arr[i]);
-                        totalTimeArr.set(i, arr2[i]);
-                        //System.out.println("Index is " + i + "Value " + arr2[i]);
+            for (int i = 0; i < constantSize; i++) {
+                if (logic.isProcessAlive(items.get(i))) {
+                    arr[i]++;
+                    arr2[i]++;
+                    if (arr[i] % stepOfNotifications.get(i) == 0){
+                        lol[i] += stepOfNotifications.get(i) / 60;
+                        showNotification("Ви працюєте вже " + lol[i] +" хвилин в " + items.get(i), Main.trayIcon);
                     }
-                })
+                }
+                timeOfAllPrograms.set(i, arr[i]);
+                totalTimeArr.set(i, arr2[i]);
+            }
+        })
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-    }
-
-    public void writeItemsInFile(File file) {
-        FileWriter writer = null;
-        try {
-            writer = new FileWriter(file, true);
-            writer.append("Items is: " + trackedProgramsSelModel.getSelectedItems() + "\n");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void updateTimeLabel(int a, Label label, String text) {
@@ -362,6 +407,10 @@ public class Controller {
                 String str = text + a + " хвилин";
                 label.setText(str);
             }
+            else if(a == 11 || a == 12 || a== 13 || a==14){
+                String str = text + a + " хвилин";
+                label.setText(str);
+            }
             else if (a % 10 == 1){
                 String str = text + a + " хвилина";
                 label.setText(str);
@@ -380,5 +429,3 @@ public class Controller {
         alert.showAndWait();
     }
 }
-
-

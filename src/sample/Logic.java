@@ -1,6 +1,13 @@
 package sample;
 
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.geometry.Side;
+import javafx.scene.chart.PieChart;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -23,8 +30,9 @@ class Logic{
         return lst;
     }
 
-    public ArrayList<String> getAllImportantPrograms() throws IOException {
+    public ArrayList<String> getAllImportantPrograms(ObservableList<String> items) throws IOException {
         ArrayList<String> lst = new ArrayList<>();
+        ArrayList<String> lst2 = new ArrayList<>();
         String line;
         //Строка щоб забрати всі інстальовані програми системи з павершелу
         String command = "powershell.exe " + "Get-ItemProperty" +
@@ -34,14 +42,13 @@ class Logic{
 
         BufferedReader stdout = new BufferedReader(new InputStreamReader(
                 powerShellProcess.getInputStream()));
-        StringBuilder builder = new StringBuilder();
         while ((line = stdout.readLine()) != null) {
-            if ((line.contains("a") || line.contains("i") || line.contains("o") || line.contains("e") ||line.contains("u")) && !(line.contains("Windows") || line.contains("Win") || line.contains("vs")
+            if ((line.contains("a") || line.contains("i") || line.contains("o") || line.contains("e") || line.contains("u")) && !(line.contains("Windows") || line.contains("Win") || line.contains("vs")
                     || line.contains("Microsoft") || line.contains("icecap") || line.contains("----") || line.contains("DisplayName"))) {
-                        lst.add(line.replaceAll("[\\s]{2,}", " "));
+                lst.add(line.replaceAll("[\\s]{2,}", " "));
+
             }
         }
-        stdout.close();
         return lst;
     }
 
@@ -182,5 +189,37 @@ class Logic{
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
+    }
+
+    public void chartCreator(PieChart pieChart ,AnchorPane pane, ObservableList<String> names, ArrayList<Integer> currTime){
+        Label header = new Label("Статистика за увесь час");
+        PieChart.Data[] slices = new PieChart.Data[names.size()];
+        for (int i = 0; i < names.size(); i++) {
+            String[] arr = names.get(i).split("\\s+");
+            slices[i] = new PieChart.Data(arr[0], currTime.get(i) / 60);
+        }
+        for (int i = 0; i < slices.length; i++) {
+            pieChart.getData().add(slices[i]);
+        }
+
+        pieChart.setPrefSize(pane.getWidth(), pane.getHeight());
+        pieChart.setLegendSide(Side.LEFT);
+        pieChart.setLegendVisible(true);
+        pieChart.setStartAngle(30);
+        final Label caption = new Label("");
+        caption.setTextFill(Color.WHITE);
+        caption.setStyle("-fx-font: 12 arial;");
+        for (final PieChart.Data data : pieChart.getData()) {
+            data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent e) {
+                    caption.setTranslateX(e.getSceneX());
+                    caption.setTranslateY(e.getSceneY());
+
+                    caption.setText(String.valueOf(data.getPieValue() + "хв."));
+                }
+            });
+        }
+        pane.getChildren().addAll(header,pieChart, caption);
     }
 }

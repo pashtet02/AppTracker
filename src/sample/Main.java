@@ -13,32 +13,31 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
-import java.io.IOException;
 
-public class Main extends Application{
+public class Main extends Application {
+
 
     private Logic logic = new Logic();
     private Stage primaryStage = new Stage();
     private File file = new File("src/sample/info.txt");
-
     private static ImageIcon icon = new ImageIcon("src/sample/bulb2.gif");
     private static Image image = icon.getImage();
-    private static boolean notificationsOn = true;
+
+    public static boolean notificationsOn = true;
     public static TrayIcon trayIcon = new TrayIcon(image);
     SystemTray tray = java.awt.SystemTray.getSystemTray();
     ObservableList<String> elem = Controller.getItems();
 
+
     @Override
     public void stop() throws Exception {
         super.stop();
-        //ObservableList<String> items = FXCollections.observableArrayList("Chrome", "Discord", "Steam", "CsGo", "Zoom");
         logic.writeInfo(file, elem, Controller.getTimeOfAllPrograms(), Controller.getStepOfNotifications(), Controller.getTotalTimeArr());
-        System.out.println(elem);
         logic.writeItems(file, elem);
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) throws Exception{
         this.addAppToTray(trayIcon);
         this.primaryStage = primaryStage;
 
@@ -49,10 +48,9 @@ public class Main extends Application{
         });
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("App Tracker");
-        primaryStage.setScene(new Scene(root, 600, 400));
+        primaryStage.setScene(new Scene(root, 800, 500));
         primaryStage.show();
-        }
-
+    }
 
     private void addAppToTray(TrayIcon trayIcon) {
         try {
@@ -73,7 +71,7 @@ public class Main extends Application{
                     if (cb1Id == ItemEvent.SELECTED){
                         notificationsOn = false;
                     } else {
-                       notificationsOn = true;
+                        notificationsOn = true;
                     }
                 }
             });
@@ -115,6 +113,8 @@ public class Main extends Application{
             primaryStage.toFront();
         }
     }
+
+
     public static void main(String[] args) {
         launch(args);
     }

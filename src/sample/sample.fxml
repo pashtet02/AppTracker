@@ -1,81 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #202225;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
-    <children>
-      <AnchorPane layoutY="-1.0" prefHeight="90.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="87.0" />
-        <AnchorPane fx:id="logicPane" layoutY="87.0" prefHeight="298.0" prefWidth="600.0" style="-fx-background-color: #32353b;" AnchorPane.bottomAnchor="14.600000000000023" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="87.0">
-            <children>
-                <AnchorPane layoutX="1.0" layoutY="6.0" prefHeight="298.0" prefWidth="100.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <children>
-                        <ToggleButton fx:id="mainWindowToggleButton" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" stylesheets="" text="Головне вікно" AnchorPane.leftAnchor="0.0" />
-                        <ToggleButton fx:id="statsToggleButton" layoutY="99.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" styleClass="sample.Controler" text="Статистика" AnchorPane.leftAnchor="0.0" />
-                        <ToggleButton fx:id="settingsToggleButton" layoutY="198.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" text="Налаштування" AnchorPane.bottomAnchor="0.39999999999997726" AnchorPane.leftAnchor="0.0" />
-                    </children>
-                </AnchorPane>
-                <SplitPane dividerPositions="0.4779116465863454" layoutX="100.0" prefHeight="298.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                            <children>
-                                <TabPane prefHeight="296.8" prefWidth="238.4" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                    <tabs>
-                                        <Tab text="Installed">
-                                            <content>
-                                                <AnchorPane fx:id="" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                                            </content>
-                                            <content>
-                                                <ListView fx:id="installedProgramsListView" prefHeight="200.0" prefWidth="200.0" />
-                                            </content>
-                                        </Tab>
-                                        <Tab text="Tracked">
-                                            <content>
-                                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                                    <children>
-                                                        <ListView fx:id="listOfTrackedPrograms" prefHeight="267.2" prefWidth="238.4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                    </children>
-                                                </AnchorPane>
-                                            </content>
-                                        </Tab>
-                                    </tabs>
-                                </TabPane>
-                            </children>
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #202225;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <AnchorPane fx:id="logicPane" layoutY="100.0" prefHeight="400.0" prefWidth="800.0" style="-fx-background-color: #202225;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="90.0">
+         <children>
+            <AnchorPane layoutY="-6.0" prefHeight="410.0" prefWidth="116.0" style="-fx-background-color: #202225 #202225;" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="-6.0">
+               <children>
+                  <ToggleButton fx:id="homeButton" disable="true" layoutX="6.0" layoutY="8.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="108.0" selected="true" style="-fx-background-color: #32353b; -fx-border-color: #2b2b2b; -fx-border-radius: 5;" text="Головна" textFill="#50e782" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0">
+                     <effect>
+                        <Glow />
+                     </effect>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ToggleButton>
+                  <ToggleButton fx:id="settingsButton" layoutX="6.0" layoutY="338.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="108.0" style="-fx-background-color: #32353b; -fx-border-color: #2b2b2b; -fx-border-radius: 5;" text="Налаштування" textFill="#50e782" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0">
+                     <effect>
+                        <Glow />
+                     </effect>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ToggleButton>
+                  <ToggleButton fx:id="statisticsButton" layoutX="4.0" layoutY="65.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="108.0" style="-fx-background-color: #32353b; -fx-border-color: #2b2b2b; -fx-border-radius: 5;" text="Статистика" textFill="#50e782" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="70.0">
+                     <effect>
+                        <Glow />
+                     </effect>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ToggleButton>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="settingsPane" layoutX="126.0" layoutY="10.0" prefHeight="300.0" prefWidth="495.0" style="-fx-background-color: grey;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <AnchorPane fx:id="statisticsPane" layoutX="116.0" layoutY="10.0" prefHeight="310.0" prefWidth="505.0" style="-fx-background-color: yellow;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <AnchorPane fx:id="homePane" layoutX="116.0" prefHeight="300.0" prefWidth="495.0" style="-fx-background-color: #202225;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <SplitPane fx:id="homeSplitPane" dividerPositions="0.5058651026392962" prefHeight="302.0" prefWidth="495.0" style="-fx-background-color: #202225 #202225;" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <items>
+                        <AnchorPane fx:id="listAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="69.0" style="-fx-background-color: #313335;">
+                           <children>
+                              <ToggleButton fx:id="installedProgramsButton" disable="true" layoutY="1.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="142.0" selected="true" style="-fx-background-color: #2b2b2b; -fx-border-color: gray; -fx-border-radius: 2;" text="Встановлені програми" textFill="#f5f3f3" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ToggleButton>
+                              <ToggleButton fx:id="trackedProcessesButton" layoutX="142.0" layoutY="1.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="200.0" style="-fx-background-color: #2b2b2b; -fx-border-color: gray; -fx-border-radius: 2;" text="Програми, що відслідковуються" textFill="WHITE" AnchorPane.leftAnchor="142.0" AnchorPane.topAnchor="0.0">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ToggleButton>
+                              <ListView fx:id="listOfTrackedPrograms" layoutY="27.0" prefHeight="370.0" prefWidth="676.0" style="-fx-background-color: #313335;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0" />
+                              <ListView fx:id="listOfInstalledPrograms" layoutY="27.0" prefHeight="343.0" prefWidth="342.0" style="-fx-background-color: #313335;" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0" />
+                              <Button fx:id="addToListButton" layoutY="369.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="342.0" style="-fx-background-color: #202225;" text="Додати до відслідковування" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="369.0">
+                                 <effect>
+                                    <Glow />
+                                 </effect>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
+                           </children>
                         </AnchorPane>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="297.0" prefWidth="256.0">
-                            <children>
-                                <ScrollPane layoutY="5.0" prefHeight="296.8" prefWidth="254.4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                    <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="295.0" prefWidth="252.0">
-                                            <children>
-                                                <Label fx:id="TrackedProgramNameLabel" layoutX="10.0" layoutY="14.0" prefHeight="18.0" prefWidth="235.0" text="Програма: " AnchorPane.leftAnchor="10.0">
+                        <AnchorPane fx:id="infoMainPane" style="-fx-background-color: #32353b #32353b;">
+                           <children>
+                              <AnchorPane fx:id="infoTrackPane" minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="206.0" style="-fx-background-color: #32353b #32353b;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <Label fx:id="infoName" layoutX="19.0" layoutY="14.0" text="Програма:" textFill="WHITE">
                                        <font>
-                                          <Font name="SansSerif Italic" size="16.0" />
-                                       </font></Label>
-                                                <Label fx:id="timeOfCurrentSessionLabel" layoutX="9.0" layoutY="44.0" text="У поточному сеансі: " AnchorPane.leftAnchor="10.0">
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="infoCurrentTime" layoutX="19.0" layoutY="42.0" text="Час у поточному сеансі:" textFill="WHITE">
                                        <font>
-                                          <Font name="SansSerif Italic" size="16.0" />
-                                       </font></Label>
-                                                <Label fx:id="totalTimeOfWorkLabel" layoutX="9.0" layoutY="82.0" text="Загальний час роботи: " AnchorPane.leftAnchor="10.0">
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="infoAllTime" layoutX="19.0" layoutY="73.0" text="Загальний час роботи:" textFill="WHITE">
                                        <font>
-                                          <Font name="SansSerif Italic" size="16.0" />
-                                       </font></Label>
-                                    <ComboBox fx:id="alarmComboBox" layoutY="135.0" prefWidth="150.0" AnchorPane.leftAnchor="0.0" />
-                                    <Label layoutX="2.0" layoutY="109.0" text="Сповіщувати кожні:" AnchorPane.leftAnchor="2.0" />
-                                    <Button fx:id="AddToTrack" layoutX="2.0" layoutY="242.0" mnemonicParsing="false" text=" Добавити" AnchorPane.bottomAnchor="27.599999999999987" />
-                                    <Button fx:id="dellFromTrack" layoutX="89.0" layoutY="242.0" mnemonicParsing="false" text="Видалити" AnchorPane.bottomAnchor="27.59999999999996" />
-                                            </children>
-                                        </AnchorPane>
-                                    </content>
-                                </ScrollPane>
-                            </children></AnchorPane>
-                    </items>
-                </SplitPane>
-            </children></AnchorPane>
-        <Text fx:id="headerText" fill="#76dd7a" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="App Tracker" textAlignment="CENTER" wrappingWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <font>
-                <Font name="Magneto Bold" size="54.0" />
-            </font>
-        </Text>
-    </children>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="infoPeriodLabel" layoutX="19.0" layoutY="105.0" text="Сповіщувати кожні:" textFill="WHITE">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <ComboBox fx:id="infoPeriodComboBox" layoutX="18.0" layoutY="142.0" prefHeight="34.0" prefWidth="135.0" style="-fx-background-color: #202225;">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </ComboBox>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
+                     </items>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <Text fx:id="headerText" fill="#50e782" layoutX="130.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The best tracker" textAlignment="CENTER" wrappingWidth="539.1109085083008" AnchorPane.bottomAnchor="420.1435546875" AnchorPane.leftAnchor="130.0" AnchorPane.rightAnchor="130.88909149169922" AnchorPane.topAnchor="13.701171875">
+         <font>
+            <Font name="Blackadder ITC" size="54.0" />
+         </font>
+      </Text>
+   </children>
 </AnchorPane>
