@@ -7,7 +7,6 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +22,6 @@ class Logic{
         ArrayList<String> lst = new ArrayList<>();
         ProcessHandle.allProcesses().forEach(processHandle -> {
             String str = String.valueOf(processHandle.info());
-            //Дивний іф потрібний, щоб забрати порожні системні процеси
             if (str.contains("a") || str.contains("e") || str.contains("y") || str.contains("u") ||str.contains("o") || str.contains("i") )
                 lst.add( ""+processHandle.pid() + " " + str);
         });
@@ -46,7 +44,6 @@ class Logic{
             if ((line.contains("a") || line.contains("i") || line.contains("o") || line.contains("e") || line.contains("u")) && !(line.contains("Windows") || line.contains("Win") || line.contains("vs")
                     || line.contains("Microsoft") || line.contains("icecap") || line.contains("----") || line.contains("DisplayName"))) {
                 lst.add(line.replaceAll("[\\s]{2,}", " "));
-
             }
         }
         return lst;
@@ -64,6 +61,7 @@ class Logic{
         }
         return programIsAlive;
     }
+
     public void writeItems(File file, ObservableList<String> items){
         try (FileWriter writer = new FileWriter(file, true)) {
             StringBuilder result = new StringBuilder("Items_");
@@ -78,10 +76,8 @@ class Logic{
                 else {
                     result.append(str[i] + "_");
                 }
-
             }
             result.deleteCharAt(result.length()-1);
-            System.out.println(result);
 
             writer.append(result + "\n");
             sc.close();
@@ -115,6 +111,7 @@ class Logic{
         }
         return items;
     }
+
     public void readTotalTimeOfWork(File file, ObservableList<String> items) {
         int[] totalTime = new int[items.size()];
         int[] notificationsTime = new int[items.size()];
@@ -191,8 +188,11 @@ class Logic{
         }
     }
 
-    public void chartCreator(PieChart pieChart ,AnchorPane pane, ObservableList<String> names, ArrayList<Integer> currTime){
+    public void chartCreator(PieChart pieChart, AnchorPane pane, ObservableList<String> names, ArrayList<Integer> currTime, Label caption){
         Label header = new Label("Статистика за увесь час");
+        pieChart.getData().removeAll();
+        pane.getChildren().removeAll();
+
         PieChart.Data[] slices = new PieChart.Data[names.size()];
         for (int i = 0; i < names.size(); i++) {
             String[] arr = names.get(i).split("\\s+");
@@ -206,20 +206,14 @@ class Logic{
         pieChart.setLegendSide(Side.LEFT);
         pieChart.setLegendVisible(true);
         pieChart.setStartAngle(30);
-        final Label caption = new Label("");
-        caption.setTextFill(Color.WHITE);
-        caption.setStyle("-fx-font: 12 arial;");
         for (final PieChart.Data data : pieChart.getData()) {
             data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent e) {
-                    caption.setTranslateX(e.getSceneX());
-                    caption.setTranslateY(e.getSceneY());
-
-                    caption.setText(String.valueOf(data.getPieValue() + "хв."));
+                    caption.setText("Програма: " + data.getName() + "\n"+ "Загальний час роботи: " + String.valueOf(data.getPieValue() + "хв."));
                 }
             });
         }
-        pane.getChildren().addAll(header,pieChart, caption);
+        pane.getChildren().addAll(pieChart);
     }
 }

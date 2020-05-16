@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -28,7 +29,6 @@ public class Controller {
     private final int OneHour = 3600;
     private final int ThreeHours = 10800;
     private String nameOfCurrProgram = "";
-
     public static ArrayList<Integer> totalTimeArr = new ArrayList<>(); //масив з загальним часом роботи всіх програм
     public static ArrayList<Integer> timeOfAllPrograms = new ArrayList<>(); //масив з поточним часом роботи програм
     public static ArrayList<Integer> stepOfNotifications = new ArrayList<>(); //масив з періодом сповіщень для кожної програми
@@ -49,7 +49,8 @@ public class Controller {
     public static ObservableList<String> getItems() {
         return items;
     }
-
+    Label header = new Label();
+    Label caption = new Label();
 
     @FXML
     private AnchorPane mainPane;
@@ -153,7 +154,7 @@ public class Controller {
             @Override
             public void handle(ActionEvent actionEvent) {
                 listOfTrackedPrograms.toFront();
-                trackedProcessesButton.setSelected(true);
+                trackedProcessesButton.setSelected(false);
                 trackedProcessesButton.setBackground(installedProgramsButton.getBackground());
                 trackedProcessesButton.setDisable(true);
                 installedProgramsButton.setSelected(false);
@@ -178,12 +179,18 @@ public class Controller {
             @Override
             public void handle(ActionEvent actionEvent) {
                 statisticsPane.toFront();
+                caption.setText("");
+                header.setText("Статистика користування за весь час перегляду: ");
                 homeButton.setSelected(false);
                 settingsButton.setSelected(false);
                 statisticsButton.setDisable(true);
                 homeButton.setDisable(false);
                 settingsButton.setDisable(false);
-                logic.chartCreator(new PieChart(), statisticsPane, items, totalTimeArr);
+                BorderPane borderPane = new BorderPane();
+                borderPane.setTop(header);
+                borderPane.setBottom(caption);
+                logic.chartCreator(new PieChart(), statisticsPane, items, totalTimeArr, caption);
+                statisticsPane.getChildren().add(borderPane);
             }
         });
         settingsButton.setOnAction( e ->{
@@ -248,6 +255,7 @@ public class Controller {
         updateTimeOfAllPrograms(items.size());
         trackAll(items);
         updatorOfLabels();
+
 
         //TODO
         //Забрати повторення програм
@@ -319,7 +327,6 @@ public class Controller {
                     if(logic.isProcessAlive(nameOfProgram.substring(0, nameOfProgram.length()-1))) {
                         currentTime[0]++;
                         totalTime[0]++;
-                        System.out.println("In track one process works "  + nameOfProgram + " curr time = " + currentTime[0]);
                         System.out.println("In track one process works " + nameOfProgram + " total time = " + totalTime[0]);
                         if (currentTime[0] % stepOfNotifications.get(indexOfCurr) == 0){
                             lol[0] += stepOfNotifications.get(indexOfCurr) / 60;
