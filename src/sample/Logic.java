@@ -3,6 +3,7 @@ package sample;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Side;
+import javafx.scene.Cursor;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -22,6 +23,7 @@ class Logic{
         ArrayList<String> lst = new ArrayList<>();
         ProcessHandle.allProcesses().forEach(processHandle -> {
             String str = String.valueOf(processHandle.info());
+            //Дивний іф потрібний, щоб забрати порожні системні процеси
             if (str.contains("a") || str.contains("e") || str.contains("y") || str.contains("u") ||str.contains("o") || str.contains("i") )
                 lst.add( ""+processHandle.pid() + " " + str);
         });
@@ -44,6 +46,7 @@ class Logic{
             if ((line.contains("a") || line.contains("i") || line.contains("o") || line.contains("e") || line.contains("u")) && !(line.contains("Windows") || line.contains("Win") || line.contains("vs")
                     || line.contains("Microsoft") || line.contains("icecap") || line.contains("----") || line.contains("DisplayName"))) {
                 lst.add(line.replaceAll("[\\s]{2,}", " "));
+
             }
         }
         return lst;
@@ -61,7 +64,6 @@ class Logic{
         }
         return programIsAlive;
     }
-
     public void writeItems(File file, ObservableList<String> items){
         try (FileWriter writer = new FileWriter(file, true)) {
             StringBuilder result = new StringBuilder("Items_");
@@ -76,8 +78,10 @@ class Logic{
                 else {
                     result.append(str[i] + "_");
                 }
+
             }
             result.deleteCharAt(result.length()-1);
+            System.out.println(result);
 
             writer.append(result + "\n");
             sc.close();
@@ -111,7 +115,6 @@ class Logic{
         }
         return items;
     }
-
     public void readTotalTimeOfWork(File file, ObservableList<String> items) {
         int[] totalTime = new int[items.size()];
         int[] notificationsTime = new int[items.size()];
@@ -172,7 +175,7 @@ class Logic{
     }
 
 
-    public void writeInfo(File file, ObservableList<String> items, ArrayList<Integer> execTimeInSec, ArrayList<Integer> stepNotiff, ArrayList<Integer> totalTimeArr) {
+    public void writeInfo(File file, ObservableList<String> items, ArrayList<Integer> execTimeInSec, ArrayList<Integer> stepNotiff, ArrayList<Integer> totalTimeArr, String message) {
         try (FileWriter writer = new FileWriter(file)) {
             Date date = new Date();
             writer.append("Востаннє програма відкривалась " + date + "\n");
@@ -182,10 +185,32 @@ class Logic{
                 writer.append(items.get(i) + " minutes_" + stepNotiff.get(i) + "_" + "\n");
                 System.out.println(stepNotiff.get(i));
             }
+            writer.append("Message_" + message + "\n");
             writer.flush();
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
+    }
+    public String readMessage(File file){
+        String message = "";
+        Scanner sc = null;
+        try {
+            sc = new Scanner(file, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        while (sc.hasNextLine()) {
+            String str = sc.nextLine();
+            if (str.contains("Message_")){
+                for (int i = 1; i < str.length(); i++) {
+                    if(str.charAt(i) == '_'){
+                        message = str.substring(i+1);
+                    }
+                }
+            }
+        }
+        System.out.println("message = " + message);
+        return message;
     }
 
     public void chartCreator(PieChart pieChart, AnchorPane pane, ObservableList<String> names, ArrayList<Integer> currTime, Label caption){
@@ -203,8 +228,10 @@ class Logic{
         }
 
         pieChart.setPrefSize(pane.getWidth(), pane.getHeight());
-        pieChart.setLegendSide(Side.LEFT);
+        pieChart.setLegendSide(Side.BOTTOM);
         pieChart.setLegendVisible(true);
+        pieChart.setLabelsVisible(false);
+        pieChart.setCursor(Cursor.HAND);
         pieChart.setStartAngle(30);
         for (final PieChart.Data data : pieChart.getData()) {
             data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
@@ -214,6 +241,7 @@ class Logic{
                 }
             });
         }
+        pieChart.lookup(".chart-legend").setStyle(" -fx-background-color:  gray;");
         pane.getChildren().addAll(pieChart);
     }
 }

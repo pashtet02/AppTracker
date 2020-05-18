@@ -13,6 +13,7 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -23,17 +24,21 @@ import java.util.ArrayList;
 import static sample.Main.showNotification;
 
 public class Controller {
+    Label header = new Label();
+    Label caption = new Label();
+
     private static Logic logic = new Logic();
-    private static File infoFile = new File("src/sample/info.txt");
+    private static File infoFile = new File("TeamWork/src/sample/info.txt");
     private final int FifteenMinutes = 900;
     private final int OneHour = 3600;
     private final int ThreeHours = 10800;
     private String nameOfCurrProgram = "";
+    PieChart pieChart = new PieChart();
     public static ArrayList<Integer> totalTimeArr = new ArrayList<>(); //масив з загальним часом роботи всіх програм
     public static ArrayList<Integer> timeOfAllPrograms = new ArrayList<>(); //масив з поточним часом роботи програм
     public static ArrayList<Integer> stepOfNotifications = new ArrayList<>(); //масив з періодом сповіщень для кожної програми
     private static String nameOfChoicedProgram = "";
-
+    protected static String message = logic.readMessage(infoFile);
     public static ArrayList<Integer> getStepOfNotifications() {
         return stepOfNotifications;
     }
@@ -49,8 +54,9 @@ public class Controller {
     public static ObservableList<String> getItems() {
         return items;
     }
-    Label header = new Label();
-    Label caption = new Label();
+
+    @FXML
+    private Button setMessageButton;
 
     @FXML
     private AnchorPane mainPane;
@@ -66,9 +72,6 @@ public class Controller {
 
     @FXML
     private ToggleButton statisticsButton;
-
-    @FXML
-    private AnchorPane settingsPane;
 
     @FXML
     private AnchorPane statisticsPane;
@@ -89,13 +92,13 @@ public class Controller {
     private ToggleButton trackedProcessesButton;
 
     @FXML
-    private ListView<String> listOfTrackedPrograms;
-
-    @FXML
     private ListView<String> listOfInstalledPrograms;
 
     @FXML
     private Button addToListButton;
+
+    @FXML
+    private ListView<String> listOfTrackedPrograms;
 
     @FXML
     private AnchorPane infoMainPane;
@@ -119,6 +122,12 @@ public class Controller {
     private ComboBox<String> infoPeriodComboBox;
 
     @FXML
+    private AnchorPane settingsPane;
+
+    @FXML
+    private TextField messageText;
+
+    @FXML
     private Text headerText;
 
     ObservableList<String> elem = FXCollections.observableArrayList(
@@ -127,10 +136,16 @@ public class Controller {
 
     @FXML
     void initialize() {
+        header.setTextFill(Color.WHITE);
+        caption.setTextFill(Color.WHITE);
+        BorderPane borderPane = new BorderPane();
+        borderPane.setTop(header);
+        borderPane.setBottom(caption);
+        statisticsPane.getChildren().addAll(borderPane);
         listOfInstalledPrograms.setStyle("-fx-control-inner-background: #313335;");
         listOfTrackedPrograms.setStyle("-fx-control-inner-background: #313335;");
         infoPeriodComboBox.setStyle("-fx-control-inner-background: #313335;" + infoPeriodComboBox.getStyle());
-        homeSplitPane.setDividerPositions(1);
+        homeSplitPane.setDividerPositions(0.4971);
         homeButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -154,7 +169,7 @@ public class Controller {
             @Override
             public void handle(ActionEvent actionEvent) {
                 listOfTrackedPrograms.toFront();
-                trackedProcessesButton.setSelected(false);
+                trackedProcessesButton.setSelected(true);
                 trackedProcessesButton.setBackground(installedProgramsButton.getBackground());
                 trackedProcessesButton.setDisable(true);
                 installedProgramsButton.setSelected(false);
@@ -179,23 +194,30 @@ public class Controller {
             @Override
             public void handle(ActionEvent actionEvent) {
                 statisticsPane.toFront();
+                pieChart.getData().removeAll();
                 caption.setText("");
+                if (statisticsPane.getChildren().size() >= 2)
+                    for (int i = 1; i < statisticsPane.getChildren().size(); i++)
+                        statisticsPane.getChildren().remove(i);
                 header.setText("Статистика користування за весь час перегляду: ");
                 homeButton.setSelected(false);
                 settingsButton.setSelected(false);
                 statisticsButton.setDisable(true);
                 homeButton.setDisable(false);
                 settingsButton.setDisable(false);
-                BorderPane borderPane = new BorderPane();
-                borderPane.setTop(header);
-                borderPane.setBottom(caption);
+
                 logic.chartCreator(new PieChart(), statisticsPane, items, totalTimeArr, caption);
-                statisticsPane.getChildren().add(borderPane);
+                System.out.println(statisticsPane.getChildren());
             }
         });
         settingsButton.setOnAction( e ->{
-            showAlertWithoutHeaderText("Меню налаштувань");
-            settingsButton.setSelected(false);
+            settingsPane.toFront();
+            homeButton.setSelected(false);
+            settingsButton.setSelected(true);
+            settingsButton.setDisable(true);
+            statisticsButton.setDisable(false);
+            homeButton.setDisable(false);
+            statisticsButton.setDisable(false);
         });
         ////////////////////////////////////////////////////////////////////////
         logic.readTotalTimeOfWork(infoFile, items);
@@ -251,21 +273,24 @@ public class Controller {
                     break;
             }
         });
+        setMessageButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                message = messageText.getText();
+            }
+        });
         //Запуск таймерів
         updateTimeOfAllPrograms(items.size());
         trackAll(items);
         updatorOfLabels();
 
-
-        //TODO
-        //Забрати повторення програм
         ArrayList<String> installedProgramsArr = null;
         try {
             installedProgramsArr = logic.getAllImportantPrograms(items);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("arr size " + installedProgramsArr.size());
+
         ObservableList<String> installedPrograms = FXCollections.observableArrayList(installedProgramsArr);
         listOfInstalledPrograms.setItems(installedPrograms);
         MultipleSelectionModel<String> instProgramSelMod = listOfInstalledPrograms.getSelectionModel();
@@ -293,7 +318,7 @@ public class Controller {
             System.out.println(items);
         });
     }
-
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //викликається при натисненні нового елемента з таба tracked programs
     private void updateCheckBox(SingleSelectionModel<String> alarmComboBoxSelMod){
         int indexOfSelectedItem = trackedProgramsSelModel.getSelectedIndex();
@@ -323,14 +348,13 @@ public class Controller {
         int[] currentTime = new int[1];
         int[] totalTime = new int[1];
         timeline = new Timeline(
-                new KeyFrame(Duration.millis(1000), e -> {
+                new KeyFrame(Duration.millis(15_000), e -> {
                     if(logic.isProcessAlive(nameOfProgram.substring(0, nameOfProgram.length()-1))) {
-                        currentTime[0]++;
-                        totalTime[0]++;
-                        System.out.println("In track one process works " + nameOfProgram + " total time = " + totalTime[0]);
+                        currentTime[0]+=15;
+                        totalTime[0]+=15;
                         if (currentTime[0] % stepOfNotifications.get(indexOfCurr) == 0){
                             lol[0] += stepOfNotifications.get(indexOfCurr) / 60;
-                            showNotification("Ви працюєте вже " + lol[0] +" хвилин в " + items.get(indexOfCurr), Main.trayIcon);
+                            showNotification("Ви працюєте вже " + lol[0] +" хвилин в " + items.get(indexOfCurr) +" " +  message, Main.trayIcon);
                         }
                     }
                     timeOfAllPrograms.set(indexOfCurr, currentTime[0]);
@@ -348,10 +372,6 @@ public class Controller {
             if (index >= 0){
                 updateTimeLabel(timeOfAllPrograms.get(index) / 60, infoCurrentTime, "Час у поточному сеансі: ");
                 updateTimeLabel(totalTimeArr.get(index) / 60, infoAllTime, "Загальний час роботи: ");
-                System.out.println("Updator worked");
-            }
-            else {
-                System.out.println("ще нічого не вибрано");
             }
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -374,14 +394,14 @@ public class Controller {
         for (int i = 0; i < arr2.length; i++) {
             arr2[i] = totalTimeArr.get(i);
         }
-        timeline = new Timeline(new KeyFrame(Duration.millis(1000), e -> {
+        timeline = new Timeline(new KeyFrame(Duration.millis(15_000), e -> {
             for (int i = 0; i < constantSize; i++) {
                 if (logic.isProcessAlive(items.get(i))) {
-                    arr[i]++;
-                    arr2[i]++;
+                    arr[i]+=15;
+                    arr2[i]+=15;
                     if (arr[i] % stepOfNotifications.get(i) == 0){
                         lol[i] += stepOfNotifications.get(i) / 60;
-                        showNotification("Ви працюєте вже " + lol[i] +" хвилин в " + items.get(i), Main.trayIcon);
+                        showNotification("Ви працюєте вже " + lol[i] +" хвилин в " + items.get(i) + " "  + message, Main.trayIcon);
                     }
                 }
                 timeOfAllPrograms.set(i, arr[i]);

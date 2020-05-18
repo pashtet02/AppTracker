@@ -10,6 +10,12 @@
    <children>
       <AnchorPane fx:id="logicPane" layoutY="100.0" prefHeight="400.0" prefWidth="800.0" style="-fx-background-color: #202225;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="90.0">
          <children>
+            <AnchorPane fx:id="settingsPane" layoutX="126.0" layoutY="10.0" prefHeight="300.0" prefWidth="495.0" style="-fx-background-color: #313335;" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="27.0" prefHeight="18.0" prefWidth="145.0" text="Змінити текст сповіщення:" textFill="WHITE" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="481.0" />
+                  <TextField fx:id="messageText" layoutX="14.0" layoutY="57.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="521.2" />
+                  <Button fx:id="setMessageButton" layoutX="163.0" layoutY="57.0" mnemonicParsing="false" text="Встановити" />
+               </children></AnchorPane>
             <AnchorPane layoutY="-6.0" prefHeight="410.0" prefWidth="116.0" style="-fx-background-color: #202225 #202225;" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="-6.0">
                <children>
                   <ToggleButton fx:id="homeButton" disable="true" layoutX="6.0" layoutY="8.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="108.0" selected="true" style="-fx-background-color: #32353b; -fx-border-color: #2b2b2b; -fx-border-radius: 5;" text="Головна" textFill="#50e782" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0">
@@ -38,27 +44,25 @@
                   </ToggleButton>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="settingsPane" layoutX="126.0" layoutY="10.0" prefHeight="300.0" prefWidth="495.0" style="-fx-background-color: grey;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <AnchorPane fx:id="statisticsPane" layoutX="116.0" layoutY="10.0" prefHeight="310.0" prefWidth="505.0" style="-fx-background-color: yellow;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <AnchorPane fx:id="statisticsPane" layoutX="116.0" layoutY="10.0" prefHeight="310.0" prefWidth="505.0" style="-fx-background-color: #313335;" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <AnchorPane fx:id="homePane" layoutX="116.0" prefHeight="300.0" prefWidth="495.0" style="-fx-background-color: #202225;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <SplitPane fx:id="homeSplitPane" dividerPositions="0.5058651026392962" prefHeight="302.0" prefWidth="495.0" style="-fx-background-color: #202225 #202225;" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <items>
                         <AnchorPane fx:id="listAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="69.0" style="-fx-background-color: #313335;">
                            <children>
-                              <ToggleButton fx:id="installedProgramsButton" disable="true" layoutY="1.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="142.0" selected="true" style="-fx-background-color: #2b2b2b; -fx-border-color: gray; -fx-border-radius: 2;" text="Встановлені програми" textFill="#f5f3f3" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <ToggleButton fx:id="installedProgramsButton" layoutY="1.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="142.0" style="-fx-background-color: #2b2b2b; -fx-border-color: gray; -fx-border-radius: 2;" text="Встановлені програми" textFill="#f5f3f3" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </ToggleButton>
-                              <ToggleButton fx:id="trackedProcessesButton" layoutX="142.0" layoutY="1.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="200.0" style="-fx-background-color: #2b2b2b; -fx-border-color: gray; -fx-border-radius: 2;" text="Програми, що відслідковуються" textFill="WHITE" AnchorPane.leftAnchor="142.0" AnchorPane.topAnchor="0.0">
+                              <ToggleButton fx:id="trackedProcessesButton" disable="true" layoutX="142.0" layoutY="1.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="200.0" selected="true" style="-fx-background-color: #2b2b2b; -fx-border-color: gray; -fx-border-radius: 2;" text="Програми, що відслідковуються" textFill="WHITE" AnchorPane.leftAnchor="142.0" AnchorPane.topAnchor="0.0">
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </ToggleButton>
-                              <ListView fx:id="listOfTrackedPrograms" layoutY="27.0" prefHeight="370.0" prefWidth="676.0" style="-fx-background-color: #313335;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0" />
                               <ListView fx:id="listOfInstalledPrograms" layoutY="27.0" prefHeight="343.0" prefWidth="342.0" style="-fx-background-color: #313335;" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0" />
-                              <Button fx:id="addToListButton" layoutY="369.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="342.0" style="-fx-background-color: #202225;" text="Додати до відслідковування" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="369.0">
+                              <Button fx:id="addToListButton" layoutY="369.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="342.0" style="-fx-background-color: #202225;" text="Додати до відслідковування" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                  <effect>
                                     <Glow />
                                  </effect>
@@ -66,11 +70,12 @@
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </Button>
+                              <ListView fx:id="listOfTrackedPrograms" layoutY="27.0" prefHeight="370.0" prefWidth="676.0" style="-fx-background-color: #313335;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0" />
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="infoMainPane" style="-fx-background-color: #32353b #32353b;">
                            <children>
-                              <AnchorPane fx:id="infoTrackPane" minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="206.0" style="-fx-background-color: #32353b #32353b;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <AnchorPane fx:id="infoTrackPane" minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="206.0" style="-fx-background-color: #32353b;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                     <Label fx:id="infoName" layoutX="19.0" layoutY="14.0" text="Програма:" textFill="WHITE">
                                        <font>

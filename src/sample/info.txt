@@ -1,12 +1,12 @@
-Востаннє програма відкривалась Sat May 16 11:49:37 EEST 2020
-Chrome execution time: 9
-Chrome total time_50061_
+Востаннє програма відкривалась Mon May 18 16:17:42 EEST 2020
+Chrome execution time: 0
+Chrome total time_57151_
 Chrome minutes_900_
 Discord execution time: 0
-Discord total time_36951_
+Discord total time_44056_
 Discord minutes_3600_
 Steam execution time: 0
-Steam total time_17153_
+Steam total time_18244_
 Steam minutes_900_
 CsGo execution time: 0
 CsGo total time_2800_
@@ -14,7 +14,8 @@ CsGo minutes_10800_
 Zoom execution time: 0
 Zoom total time_6194_
 Zoom minutes_900_
-IntelliJ IDEA Community Edition 2019.3 execution time: 9
-IntelliJ IDEA Community Edition 2019.3 total time_1685_
+IntelliJ IDEA Community Edition 2019.3 execution time: 0
+IntelliJ IDEA Community Edition 2019.3 total time_8805_
 IntelliJ IDEA Community Edition 2019.3 minutes_900_
+Message_поставте 50 :)
 Items_Chrome_Discord_Steam_CsGo_Zoom_IntelliJ IDEA Community Edition 2019.3

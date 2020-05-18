@@ -19,8 +19,8 @@ public class Main extends Application {
 
     private Logic logic = new Logic();
     private Stage primaryStage = new Stage();
-    private File file = new File("src/sample/info.txt");
-    private static ImageIcon icon = new ImageIcon("src/sample/bulb2.gif");
+    private File file = new File("TeamWork/src/sample/info.txt");
+    private static ImageIcon icon = new ImageIcon("TeamWork/src/sample/bulb2.gif");
     private static Image image = icon.getImage();
 
     public static boolean notificationsOn = true;
@@ -32,7 +32,7 @@ public class Main extends Application {
     @Override
     public void stop() throws Exception {
         super.stop();
-        logic.writeInfo(file, elem, Controller.getTimeOfAllPrograms(), Controller.getStepOfNotifications(), Controller.getTotalTimeArr());
+        logic.writeInfo(file, elem, Controller.getTimeOfAllPrograms(), Controller.getStepOfNotifications(), Controller.getTotalTimeArr(), Controller.message);
         logic.writeItems(file, elem);
     }
 
